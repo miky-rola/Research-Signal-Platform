@@ -45,6 +45,7 @@ class OTPUtils:
     def generate_otp(cls, user: User, life=600):
         secret = pyotp.random_base32()
         data = {"user_id": str(user.id), "secret": secret}
+        
         # generate token
         token = cls.generate_token(data)
 

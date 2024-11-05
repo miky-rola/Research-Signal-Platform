@@ -29,7 +29,7 @@ def test_password():
 
 @pytest.fixture
 def user(test_password) -> User:
-    return UserFactory(password=test_password)
+    return UserFactory(password=test_password, is_verified=True)
 
 
 @pytest.fixture

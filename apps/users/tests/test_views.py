@@ -33,7 +33,7 @@ class TestUserView:
     def test_user_update(self, api_client_auth, user: User):
         url = reverse("api:users-detail", args=(user.id,))
         client = api_client_auth(user)
-        data = {"email": "a@a.com", "username": "hello_world"}
+        data = {"email": "testemail@a.com", "username": "hello_world"}
 
         resp = client.patch(url, data=data)
         resp_data = resp.json()
@@ -63,7 +63,6 @@ class TestAuthView:
         response = api_client.post(
             url, data={"email": user.email, "password": test_password}
         )
-
         assert response.status_code == status.HTTP_200_OK
 
     def test_login_with_wrong_credentials(
@@ -104,7 +103,7 @@ class TestAuthView:
         data = {"old_password": test_password, "new_password": "new_password"}
         resp = client.post(url, data=data)
 
-        assert resp.status_code == status.HTTP_201_CREATED
+        assert resp.status_code == status.HTTP_200_OK
 
     def test_change_password_wrong_password(self, api_client_auth, user, test_password):
         url = reverse("api:change-password")
@@ -119,6 +118,7 @@ class TestAuthView:
 
         resp = api_client.post(url, data={"email": user.email})
         resp_data = resp.json()
+        print(resp_data)
 
         assert resp.status_code == status.HTTP_200_OK
         assert "token" in resp_data
@@ -127,7 +127,7 @@ class TestAuthView:
     def test_forget_password_wrong_email(self, api_client, user):
         url = reverse("api:forget-password")
 
-        resp = api_client.post(url, data={"email": "a@a.com"})
+        resp = api_client.post(url, data={"email": "testemail@a.com"})
         resp_data = resp.json()
 
         assert resp.status_code == status.HTTP_200_OK

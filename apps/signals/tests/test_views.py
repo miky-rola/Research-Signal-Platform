@@ -45,7 +45,7 @@ def signal(user):
         expected_return=0.05,
         confidence=90,
         in_lab=True,
-        expires_at="2024-11-05",
+        expires_at="2019-08-24T14:15:22Z",
     )
 
 @pytest.fixture
