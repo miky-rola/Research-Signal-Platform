@@ -134,7 +134,6 @@ class ChangePasswordView(CreateAPIView):
 class ProfileView(ModelViewSet):
     queryset = Profile.objects.all().prefetch_related("user")
     serializer_class = ProfileSerializer
-    filterset_fields = ("user")
     parser_classes = (FormParser, MultiPartParser)
 
     http_method_names = [m for m in ModelViewSet.http_method_names if m not in ["put"]]
