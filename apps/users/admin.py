@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from .forms import UserChangeForm, UserCreationForm
+from .models import Profile
+
 
 User = get_user_model()
 
@@ -47,3 +49,6 @@ class UserAdmin(auth_admin.UserAdmin):
     list_filter = ["is_staff", "is_superuser", "created_at"]
     search_fields = ["email", "username"]
     ordering = ["email"]
+
+
+admin.site.register(Profile)

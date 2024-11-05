@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from ..common.email import send_email
 from ..common.utils import OTPUtils
+from .models import Profile
 
 User = get_user_model()
 
@@ -156,3 +157,21 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.save()
 
         return {"old_password": "", "new_password": ""}
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    email = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Profile
+        fields = (
+            "id",
+            "user",
+            "email",
+            "risk_tolerance",
+            "preferred_strategies",
+            "notification_preferences",
+        )
+
+    def get_email(self, profile) -> str:
+        return profile.user.email if profile.user else ""

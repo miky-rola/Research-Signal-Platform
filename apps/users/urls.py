@@ -9,12 +9,15 @@ from .views import (
     ResetPasswordView,
     SignUpView,
     UserView,
+    ProfileView
 )
 
 router = DefaultRouter()
 
 
 router.register(r"users", UserView, basename="users")
+router.register("profile", ProfileView, basename="profile")
+
 
 
 urlpatterns = [

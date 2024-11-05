@@ -3,7 +3,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -84,3 +84,12 @@ class User(AbstractBaseUser, PermissionsMixin, base_models.BaseModel):
 
     def get_short_name(self):
         return self.email
+
+
+class Profile(base_models.BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    risk_tolerance = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )
+    preferred_strategies = models.JSONField(default=list)
+    notification_preferences = models.JSONField(default=dict)
