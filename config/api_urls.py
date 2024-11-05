@@ -4,5 +4,4 @@ app_name = "api"
 
 
 urlpatterns = [
-    path(r"", include("apps.users.urls")),
 ]
