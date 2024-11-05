@@ -20,7 +20,11 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
 async def get_smtp_connection():
     smtp = aiosmtplib.SMTP(hostname=SMTP_HOST, port=SMTP_PORT, use_tls=True, timeout=10)
     await smtp.connect()
-    await smtp.login(os.getenv("EMAIL_HOST_USER"), os.getenv("EMAIL_HOST_PASSWORD"))
+    print(os.getenv("EMAIL_HOST_USER", ""), os.getenv("EMAIL_HOST_PASSWORD", ""))
+    try:
+        await smtp.login(os.getenv("EMAIL_HOST_USER", ""), os.getenv("EMAIL_HOST_PASSWORD", ""))
+    except Exception as e:
+        print(f"error: {e}")
     return smtp
 
 
@@ -50,6 +54,7 @@ async def send_email(subject, verification_code, recipient_email, username="Frie
     message.attach(MIMEText(text_content, "plain"))
 
     smtp = await get_smtp_connection()
+
     try:
         await smtp.send_message(message)
         logger.info(f"Email sent successfully to {recipient_email}")

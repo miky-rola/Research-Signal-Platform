@@ -19,7 +19,7 @@ def media_storage(settings, tmpdir):
 
 @pytest.fixture()
 def test_email():
-    return "test@email.com"
+    return "mikyrola8@gmail.com"
 
 
 @pytest.fixture()
@@ -28,8 +28,8 @@ def test_password():
 
 
 @pytest.fixture
-def user(test_password) -> User:
-    return UserFactory(password=test_password, is_verified=True)
+def user(test_password, test_email) -> User:
+    return UserFactory(password=test_password, is_verified=True, email=test_email)
 
 
 @pytest.fixture

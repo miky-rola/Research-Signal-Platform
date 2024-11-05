@@ -92,10 +92,8 @@ class ForgotPasswordSerializer(serializers.Serializer):
         try:
             if user := User.objects.filter(email=email).first():
                 code, token = OTPUtils.generate_otp(user)
-                print("working 1")
                 subject = "Your Password Reset"
                 asyncio.run(send_email(subject, code, email, user.username))
-                print("working 2")
             else:
                 raise serializers.ValidationError("User with this email does not exist")
         except Exception as e:
