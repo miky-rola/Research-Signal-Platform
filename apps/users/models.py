@@ -93,3 +93,6 @@ class Profile(base_models.BaseModel):
     )
     preferred_strategies = models.JSONField(default=list)
     notification_preferences = models.JSONField(default=dict)
+
+    def __str__(self):
+        return f"{self.user.username}'s profile"

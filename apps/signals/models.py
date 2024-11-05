@@ -20,6 +20,9 @@ class MarketData(base_model):
             models.Index(fields=["ticker", "created_at"]),
         ]
 
+    def __str__(self):
+        return f"{self.ticker}: {self.implied_volatility}: {self.implied_volatility}: {self.skew}"
+
 
 class Signal(base_model):
     STRATEGY_CHOICES = [
@@ -56,6 +59,7 @@ class Signal(base_model):
     def __str__(self):
         return f"{self.ticker}: {self.strategy}"
 
+
 class UserInteraction(base_model):
     STATUS_CHOICES = [
         ("taken", "Taken"),
@@ -77,3 +81,6 @@ class UserInteraction(base_model):
             models.Index(fields=["created_at"]),
         ]
         unique_together = ["user", "signal"]
+    
+    def __str__(self):
+        return f"{self.user.username}: {self.signal.ticker}: {self.position_size}"

@@ -4,7 +4,6 @@ import logging
 
 import pyotp
 from django.contrib.auth import get_user_model
-from django.db.models import F
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode
 from rest_framework.filters import OrderingFilter
@@ -33,21 +32,6 @@ class CustomOrderingFilter(OrderingFilter):
             )
 
         return super().get_schema_fields(view)
-
-    def filter_queryset(self, request, queryset, view):
-        ordering = self.get_ordering(request, queryset, view)
-
-        if ordering:
-
-            def order_by_field(field):
-                if field.startswith("-"):
-                    return F(field[1:]).desc(nulls_last=True)
-                else:
-                    return F(field).asc(nulls_last=True)
-
-            return queryset.order_by(*[order_by_field(field) for field in ordering])
-
-        return queryset
 
 
 class OTPUtils:
