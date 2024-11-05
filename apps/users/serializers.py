@@ -1,8 +1,5 @@
 import asyncio
-from random import choices
-
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 from drf_yasg.utils import swagger_serializer_method
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -53,9 +50,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
-        code, token = OTPUtils.generate_otp(user)
-        subject = "Your Password Reset"
-        asyncio.run(send_email(subject, code, user.email, user.username))
         return user
 
 
@@ -134,16 +128,14 @@ class ResetPasswordSerializer(serializers.Serializer):
 
         user.set_password(raw_password=password)
 
-        user.is_verified = True
 
         user.save(
             update_fields=[
                 "password",
-                "is_verified",
             ]
         )
 
-        return {"email": user.email, "is_verified": user.is_verified}
+        return {"email": user.email}
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -164,63 +156,3 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.save()
 
         return {"old_password": "", "new_password": ""}
-
-
-class VerifyUserSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    verification_code = serializers.CharField(max_length=6)
-
-    def validate(self, attrs):
-        try:
-            user = User.objects.get(
-                email=attrs["email"], verification_code=attrs["verification_code"]
-            )
-        except User.DoesNotExist:
-            raise serializers.ValidationError("Invalid verification code or email")
-
-        attrs["user"] = user
-        return attrs
-
-    def create(self, validated_data):
-        user = validated_data["user"]
-        user.is_verified = True
-        user.save(
-            update_fields=[
-                "is_verified",
-            ]
-        )
-
-        refresh = RefreshToken.for_user(user)
-        tokens = {
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-        }
-
-        return {"user": user, "tokens": tokens}
-
-
-class SendVerificationCodeSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-
-    def validate_email(self, value):
-        try:
-            user = User.objects.get(email=value)
-        except User.DoesNotExist:
-            raise serializers.ValidationError("User with this email does not exist.")
-
-        if (
-            user.is_verified
-        ):
-            raise serializers.ValidationError("This email is already verified.")
-
-        return value
-
-    def save(self, **kwargs):
-        email = self.validated_data["email"]
-        user = User.objects.get(email=email)
-
-        code, token = OTPUtils.generate_otp(user)
-        subject = "Your Password Reset"
-        asyncio.run(send_email(subject, code, user.email, user.username))
-
-        return user

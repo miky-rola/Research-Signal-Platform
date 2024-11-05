@@ -14,7 +14,7 @@ class UserAdmin(auth_admin.UserAdmin):
     add_form = UserCreationForm
     fieldsets = (
         (None, {"fields": ("password",)}),
-        (_("Personal info"), {"fields": ("email", "username", "is_verified")}),
+        (_("Personal info"), {"fields": ("email", "username")}),
         (
             _("Permissions"),
             {
@@ -39,12 +39,11 @@ class UserAdmin(auth_admin.UserAdmin):
                     "username",
                     "password1",
                     "password2",
-                    "is_verified",
                 ),
             },
         ),
     )
-    list_display = ["email", "username", "is_verified", "is_staff", "created_at"]
-    list_filter = ["is_staff", "is_superuser", "is_verified", "created_at"]
+    list_display = ["email", "username", "is_staff", "created_at"]
+    list_filter = ["is_staff", "is_superuser", "created_at"]
     search_fields = ["email", "username"]
     ordering = ["email"]

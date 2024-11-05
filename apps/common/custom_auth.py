@@ -34,11 +34,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         if not self.user.is_active:
             raise serializers.ValidationError("User account is disabled.")
 
-        if not self.user.is_verified:
-            raise serializers.ValidationError(
-                "User is not verified. Please verify your email before logging in."
-            )
-
         return super().validate(attrs)
 
 
