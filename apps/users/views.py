@@ -8,7 +8,6 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from .serializers import (
@@ -78,20 +77,6 @@ class SignUpView(CreateAPIView):
             {"message": "Verification code sent"}, status=status.HTTP_201_CREATED
         )
 
-
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        operation_description="Logout the authenticated user and delete their token",
-        responses={200: response_schema},
-    )
-    def post(self, request):
-        token = Token.objects.get(user=request.user)
-        token.delete()
-        return Response(
-            {"detail": "Successfully logged out."}, status=status.HTTP_200_OK
-        )
 
 
 class ForgotPasswordView(CreateAPIView):

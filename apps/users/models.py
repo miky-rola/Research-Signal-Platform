@@ -63,6 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin, base_models.BaseModel):
         max_length=128,
         validators=[MinLengthValidator(8)],
     )
+    is_verified = models.BooleanField(_("Is Verified"), default=False)
     deleted = models.BooleanField(_("Deleted"), default=False)
 
     objects = UserManager()

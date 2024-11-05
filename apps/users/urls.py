@@ -6,7 +6,6 @@ from ..common.custom_auth import CustomTokenObtainPairView
 from .views import (
     ChangePasswordView,
     ForgotPasswordView,
-    LogoutView,
     ResetPasswordView,
     SignUpView,
     UserView,
@@ -21,7 +20,6 @@ router.register(r"users", UserView, basename="users")
 urlpatterns = [
     path(r"auth/signup/", SignUpView.as_view(), name="signup"),
     path(r"auth/login/", CustomTokenObtainPairView.as_view(), name="token-obtain"),
-    path(r"auth/logout/", LogoutView.as_view(), name="logout"),
     path(r"auth/refresh-token/", TokenRefreshView.as_view(), name="token-refresh"),
     path(
         r"auth/forget-password/", ForgotPasswordView.as_view(), name="forget-password"
