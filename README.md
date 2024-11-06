@@ -34,6 +34,6 @@
 ## Contribution
 1. Create a new branch off the main branch.
 2. Make your changes.
-3. Push the new branch to github and create a PR to the rola branch
+3. Push the new branch to github and create a PR to the main branch
 
 ![Build Status](https://github.com/CalabasHe/calabashe-api/actions/workflows/ci.yml/badge.svg?branch=main&label=Build%20Status&style=flat-square)
