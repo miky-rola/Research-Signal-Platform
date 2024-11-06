@@ -1,5 +1,7 @@
 # Research Signal Platform API
 
+## A research signal platform that allows users to receive, analyze, and track options trading signals. Users can view signals, mark them as taken/watching/passed, and track their performance.
+
 ## Research Signal Platform  API with django
 
 ## Set up environment and run
