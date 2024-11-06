@@ -16,6 +16,7 @@ from .serializers import (
 )
 from ..common.paginations import DefaultPagination
 from ..common.utils import CustomOrderingFilter
+from rest_framework.permissions import AllowAny
 
 
 CACHE_TIMEOUT = 60 * 15  # Cache for 15 minutes
@@ -70,7 +71,7 @@ class UserInteractionViewSet(viewsets.ModelViewSet):
     serializer_class = UserInteractionSerializer
     pagination_class = DefaultPagination
     filter_backends = [CustomOrderingFilter]
-
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         serializer.save()

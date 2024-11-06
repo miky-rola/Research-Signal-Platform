@@ -94,7 +94,7 @@ def test_user_interaction_list(authenticated_api_client, user_interaction):
 
 @pytest.mark.django_db
 def test_user_interaction_create(authenticated_api_client, signal, user):
-    url = reverse("api:userinteractions-list", args=(user_interaction.user.id,))
+    url = reverse("api:userinteractions-list")
     data = {
         "user": user.id,
         "signal": signal.id,
