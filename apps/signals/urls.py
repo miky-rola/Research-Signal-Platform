@@ -13,7 +13,6 @@ router.register(r"userinteractions", UserInteractionViewSet, basename="userinter
 router.register(r"", SignalViewSet, basename="signals")
 
 
-print(router.urls)
 urlpatterns = [
     path("", include(router.urls)),
 ]
