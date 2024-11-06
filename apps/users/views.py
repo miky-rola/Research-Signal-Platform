@@ -77,7 +77,7 @@ class SignUpView(CreateAPIView):
         user = serializer.save()
 
         return Response(
-            {"message": "Verification code sent"}, status=status.HTTP_201_CREATED
+            {"message": "User account created successfully"}, status=status.HTTP_201_CREATED
         )
 
 
