@@ -68,7 +68,7 @@ class SignUpView(CreateAPIView):
     permission_classes = [AllowAny]
 
     @swagger_auto_schema(
-        operation_description="User signup with email verification",
+        operation_description="User signup",
         responses={201: SignupResponseSerializer},
     )
     def create(self, request, *args, **kwargs):
