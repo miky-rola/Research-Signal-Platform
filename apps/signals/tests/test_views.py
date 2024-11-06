@@ -76,31 +76,32 @@ def test_signal_list(authenticated_api_client, signal):
     assert len(response.data["results"]) == 1
     assert response.data["results"][0] == SignalSerializer(signal).data
 
-# @pytest.mark.django_db
-# def test_signal_retrieve(authenticated_api_client, signal):
-#     url = reverse("api:signals-detail", args=[signal.id])
-#     response = authenticated_api_client.get(url)
-#     assert response.status_code == status.HTTP_200_OK
-#     assert response.data == SignalSerializer(signal).data
+@pytest.mark.django_db
+def test_signal_retrieve(authenticated_api_client, signal):
+    url = reverse("api:signals-detail", args=[signal.id])
+    response = authenticated_api_client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data == SignalSerializer(signal).data
 
-# @pytest.mark.django_db
-# def test_user_interaction_list(authenticated_api_client, user_interaction):
-#     url = reverse("api:userinteractions-list")
-#     response = authenticated_api_client.get(url)
-#     assert response.status_code == status.HTTP_200_OK
-#     assert len(response.data["results"]) == 1
-#     assert response.data["results"][0] == UserInteractionSerializer(user_interaction).data
+@pytest.mark.django_db
+def test_user_interaction_list(authenticated_api_client, user_interaction):
+    url = reverse("api:userinteractions-user-signals", args=(str(user_interaction.user.id),))
+    response = authenticated_api_client.get(url)
+    print(response.data)
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data) == 1
+    assert response.data[0] == UserInteractionSerializer(user_interaction).data
 
-# @pytest.mark.django_db
-# def test_user_interaction_create(authenticated_api_client, signal, user):
-#     url = reverse("api:userinteractions-list")
-#     data = {
-#         "user": user.id,
-#         "signal": signal.id,
-#         "status": "taken",
-#         "position_size": 100,
-#         "pnl": 500.0
-#     }
-#     response = authenticated_api_client.post(url, data, format="json")
-#     assert response.status_code == status.HTTP_201_CREATED
-#     assert UserInteraction.objects.count() == 1
+@pytest.mark.django_db
+def test_user_interaction_create(authenticated_api_client, signal, user):
+    url = reverse("api:userinteractions-list", args=(user_interaction.user.id,))
+    data = {
+        "user": user.id,
+        "signal": signal.id,
+        "status": "taken",
+        "position_size": 100,
+        "pnl": 500.0
+    }
+    response = authenticated_api_client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
+    assert UserInteraction.objects.count() == 1
